@@ -2,10 +2,16 @@
 
 echo "🚀 Setting up Laravel with Docker..."
 
-# Generate APP_KEY if not exists
-if ! grep -q "APP_KEY=base64:" .env; then
-    echo "📝 Generating application key..."
-    docker compose run --rm app php artisan key:generate
+# Copy .env if not exists
+if [ ! -f .env ]; then
+    echo "📝 Creating .env file..."
+    cp .env.example .env
+    
+    # Update database config for Docker
+    sed -i 's/DB_HOST=127.0.0.1/DB_HOST=db/' .env
+    sed -i 's/DB_DATABASE=audit_mutu/DB_DATABASE=laravel_db/' .env
+    sed -i 's/DB_USERNAME=postgres/DB_USERNAME=laravel/' .env
+    sed -i 's/DB_PASSWORD=password/DB_PASSWORD=secret/' .env
 fi
 
 # Build and start containers
@@ -14,14 +20,12 @@ docker compose up --build -d
 
 # Wait for database to be ready
 echo "⏳ Waiting for database to be ready..."
-sleep 10
+sleep 15
 
-# Run migrations
+# Generate APP_KEY
+echo "🔑 Generating application key..."
+docker compose exec app php artisan key:generate --force
+
+# Run migrations and seeders
 echo "🗄️ Running database migrations..."
-docker compose exec app php artisan migrate --force
-
-echo "✅ Setup complete!"
-echo "🌐 Application is running at: http://localhost:8000"
-echo "🔧 PgAdmin is available at: http://localhost:8081"
-echo "   Email: admin@gmail.com"
-echo "   Password: admin123"
+docker compose exec app php artisan migr

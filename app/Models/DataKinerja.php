@@ -3,12 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\LogsActivity;
 
 class DataKinerja extends Model
 {
+    use LogsActivity, SoftDeletes;
+    
     protected $table = 'data_kinerja';
     protected $primaryKey = 'kinerja_id';
     public $timestamps = false;
+    
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [
         'indikator_id',
@@ -21,6 +27,12 @@ class DataKinerja extends Model
     ];
 
     public function indikatorKinerja()
+    {
+        return $this->belongsTo(IndikatorKinerja::class, 'indikator_id', 'indikator_id');
+    }
+
+    // Alias untuk indikatorKinerja
+    public function indikator()
     {
         return $this->belongsTo(IndikatorKinerja::class, 'indikator_id', 'indikator_id');
     }

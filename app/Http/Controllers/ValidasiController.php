@@ -10,7 +10,22 @@ class ValidasiController extends Controller
 {
     public function index()
     {
-        $validasis = Validasi::with(['kinerja', 'validator'])->paginate(10);
+        $query = Validasi::with(['kinerja', 'validator']);
+        
+        // Search
+        if ($search = request('search')) {
+            $query->whereHas('kinerja', function($q) use ($search) {
+                $q->where('periode', 'like', "%{$search}%");
+            });
+        }
+        
+        // Filter by status
+        if ($status = request('status')) {
+            $query->where('status_validasi', $status);
+        }
+        
+        $validasis = $query->latest('validasi_id')->paginate(request('per_page', 10));
+        
         return view('validasi.index', compact('validasis'));
     }
 

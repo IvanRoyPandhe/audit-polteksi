@@ -20,6 +20,7 @@
             <thead>
                 <tr class="border-b bg-gray-50">
                     <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Periode</th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Audit</th>
                     <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
                     <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Hasil Ringkas</th>
                     <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Pembuat</th>
@@ -30,6 +31,17 @@
                 @foreach($laporans as $laporan)
                 <tr class="hover:bg-gray-50">
                     <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $laporan->periode }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">
+                        <div>Skor: {{ $laporan->audit->skor_total ?? 'N/A' }}</div>
+                        @if($laporan->audit->validasi->kinerja->bukti_file ?? false)
+                            <a href="{{ $laporan->audit->validasi->kinerja->bukti_file }}" target="_blank" class="text-xs text-blue-600 hover:text-blue-800 inline-flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                                Dokumen
+                            </a>
+                        @endif
+                    </td>
                     <td class="px-6 py-4 text-sm text-gray-900">{{ $laporan->tanggal_laporan }}</td>
                     <td class="px-6 py-4 text-sm text-gray-900">{{ Str::limit($laporan->hasil_ringkas, 50) }}</td>
                     <td class="px-6 py-4 text-sm text-gray-900">{{ $laporan->pembuat->name ?? 'N/A' }}</td>

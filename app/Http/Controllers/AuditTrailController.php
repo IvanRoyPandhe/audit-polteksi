@@ -9,7 +9,7 @@ class AuditTrailController extends Controller
 {
     public function index()
     {
-        $auditTrails = AuditTrail::with('user')->orderBy('timestamp', 'desc')->paginate(20);
+        $auditTrails = AuditTrail::with('user')->orderBy('waktu', 'desc')->paginate(20);
         return view('audit-trail.index', compact('auditTrails'));
     }
 }

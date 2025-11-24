@@ -29,6 +29,12 @@ class TindakLanjut extends Model
         return $this->belongsTo(AuditTemuan::class, 'temuan_id', 'temuan_id');
     }
 
+    // Alias untuk auditTemuan
+    public function temuan()
+    {
+        return $this->belongsTo(AuditTemuan::class, 'temuan_id', 'temuan_id');
+    }
+
     public function penanggungJawab()
     {
         return $this->belongsTo(User::class, 'penanggung_jawab', 'user_id');

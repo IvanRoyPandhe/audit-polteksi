@@ -20,4 +20,19 @@ class Unit extends Model
     {
         return $this->hasMany(User::class, 'unit_id', 'unit_id');
     }
+
+    public function standarMutu()
+    {
+        return $this->hasMany(StandarMutu::class, 'unit_id', 'unit_id');
+    }
+
+    public function indikatorKinerja()
+    {
+        return $this->hasMany(IndikatorKinerja::class, 'unit_id', 'unit_id');
+    }
+
+    public function kriteria()
+    {
+        return $this->hasMany(Kriteria::class, 'unit_id', 'unit_id');
+    }
 }

@@ -10,7 +10,20 @@ class AuditController extends Controller
 {
     public function index()
     {
-        $audits = Audit::with(['validasi', 'auditor'])->paginate(10);
+        $query = Audit::with(['validasi', 'auditor']);
+        
+        // Search
+        if ($search = request('search')) {
+            $query->where('periode', 'like', "%{$search}%");
+        }
+        
+        // Filter by status
+        if ($status = request('status')) {
+            $query->where('status_audit', $status);
+        }
+        
+        $audits = $query->latest('tanggal_audit')->paginate(request('per_page', 10));
+        
         return view('audit.index', compact('audits'));
     }
 

@@ -28,24 +28,45 @@ Route::middleware('auth')->group(function () {
     // User profile view for any user
     Route::get('/user/{user}', [ProfileController::class, 'viewUser'])->name('user.profile');
     
-    // Master Data Routes
-    Route::resource('standar-mutu', App\Http\Controllers\StandarMutuController::class);
-    Route::resource('indikator-kinerja', App\Http\Controllers\IndikatorKinerjaController::class);
-    Route::resource('kriteria', App\Http\Controllers\KriteriaController::class);
+    // Master Data Routes - Admin & Staff (with unit isolation)
+    Route::middleware('role:admin,staff')->group(function () {
+        Route::resource('standar-mutu', App\Http\Controllers\StandarMutuController::class);
+        Route::resource('indikator-kinerja', App\Http\Controllers\IndikatorKinerjaController::class);
+        Route::resource('kriteria', App\Http\Controllers\KriteriaController::class);
+    });
     
-    // Performance Routes
-    Route::resource('data-kinerja', App\Http\Controllers\DataKinerjaController::class);
-    Route::resource('validasi', App\Http\Controllers\ValidasiController::class);
+    // Data Kinerja - Admin & Staff
+    Route::middleware('role:admin,staff')->group(function () {
+        Route::resource('data-kinerja', App\Http\Controllers\DataKinerjaController::class);
+    });
     
-    // Audit Routes
-    Route::resource('audit', App\Http\Controllers\AuditController::class);
-    Route::resource('audit-temuan', App\Http\Controllers\AuditTemuanController::class);
-    Route::resource('tindak-lanjut', App\Http\Controllers\TindakLanjutController::class);
+    // Validasi - Admin & Validator
+    Route::middleware('role:admin,validator')->group(function () {
+        Route::resource('validasi', App\Http\Controllers\ValidasiController::class);
+    });
     
-    // Report Routes
-    Route::resource('laporan', App\Http\Controllers\LaporanController::class);
-    Route::get('audit-trail', [App\Http\Controllers\AuditTrailController::class, 'index'])->name('audit-trail.index');
+    // Audit Routes - Admin, Auditor & Validator (auditor can see all units)
+    Route::middleware('role:admin,auditor,validator')->group(function () {
+        Route::resource('audit', App\Http\Controllers\AuditController::class);
+        Route::resource('audit-temuan', App\Http\Controllers\AuditTemuanController::class);
+    });
     
+    // Tindak Lanjut - Admin & Staff
+    Route::middleware('role:admin,staff')->group(function () {
+        Route::resource('tindak-lanjut', App\Http\Controllers\TindakLanjutController::class);
+    });
+    
+    // Laporan - Admin, Auditor, Pimpinan
+    Route::middleware('role:admin,auditor,pimpinan')->group(function () {
+        Route::resource('laporan', App\Http\Controllers\LaporanController::class);
+    });
+    
+    // Audit Trail - Admin & Pimpinan
+    Route::middleware('role:admin,pimpinan')->group(function () {
+        Route::get('audit-trail', [App\Http\Controllers\AuditTrailController::class, 'index'])->name('audit-trail.index');
+    });
+    
+    // User Management - Admin Only
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::resource('/users', UserManagementController::class);
     });

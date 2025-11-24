@@ -11,6 +11,7 @@ class Kriteria extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'unit_id',
         'indikator_id',
         'nama_kriteria',
         'deskripsi',
@@ -20,9 +21,19 @@ class Kriteria extends Model
         'status'
     ];
 
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class, 'unit_id', 'unit_id');
+    }
+
     public function indikatorKinerja()
     {
         return $this->belongsTo(IndikatorKinerja::class, 'indikator_id', 'indikator_id');
+    }
+
+    public function scopeForUnit($query, $unitId)
+    {
+        return $query->where('unit_id', $unitId);
     }
 
     public function dataKinerja()

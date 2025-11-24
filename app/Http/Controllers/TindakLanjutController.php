@@ -24,9 +24,9 @@ class TindakLanjutController extends Controller
     {
         $request->validate([
             'temuan_id' => 'required|exists:audit_temuan,temuan_id',
-            'rencana_tindakan' => 'required',
-            'target_selesai' => 'required|date',
-            'status_tindakan' => 'required|max:20'
+            'rencana_perbaikan' => 'required',
+            'tanggal_target' => 'required|date',
+            'status_tindak' => 'required|max:20'
         ]);
 
         $data = $request->all();
@@ -46,9 +46,9 @@ class TindakLanjutController extends Controller
     {
         $request->validate([
             'temuan_id' => 'required|exists:audit_temuan,temuan_id',
-            'rencana_tindakan' => 'required',
-            'target_selesai' => 'required|date',
-            'status_tindakan' => 'required|max:20'
+            'rencana_perbaikan' => 'required',
+            'tanggal_target' => 'required|date',
+            'status_tindak' => 'required|max:20'
         ]);
 
         $tindakLanjut->update($request->all());

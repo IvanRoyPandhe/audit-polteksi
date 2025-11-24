@@ -34,4 +34,10 @@ class Laporan extends Model
     {
         return $this->belongsTo(User::class, 'dibuat_oleh', 'user_id');
     }
+
+    // Alias untuk pembuatLaporan
+    public function pembuat()
+    {
+        return $this->belongsTo(User::class, 'dibuat_oleh', 'user_id');
+    }
 }

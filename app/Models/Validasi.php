@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class Validasi extends Model
 {
+    use LogsActivity;
+    
     protected $table = 'validasi';
     protected $primaryKey = 'validasi_id';
     public $timestamps = false;
@@ -23,6 +26,12 @@ class Validasi extends Model
     ];
 
     public function dataKinerja()
+    {
+        return $this->belongsTo(DataKinerja::class, 'kinerja_id', 'kinerja_id');
+    }
+
+    // Alias untuk dataKinerja
+    public function kinerja()
     {
         return $this->belongsTo(DataKinerja::class, 'kinerja_id', 'kinerja_id');
     }

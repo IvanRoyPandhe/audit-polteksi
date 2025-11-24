@@ -19,6 +19,8 @@
         <table class="w-full">
             <thead>
                 <tr class="border-b bg-gray-50">
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Data Kinerja</th>
+                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Dokumen</th>
                     <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Auditor</th>
                     <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
                     <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Periode</th>
@@ -30,7 +32,23 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @foreach($audits as $audit)
                 <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $audit->auditor->name ?? 'N/A' }}</td>
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                        <div>{{ $audit->validasi->kinerja->indikator->nama_indikator ?? 'N/A' }}</div>
+                        <div class="text-xs text-gray-500">Capaian: {{ number_format($audit->validasi->kinerja->capaian ?? 0, 2) }}%</div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-900">
+                        @if($audit->validasi->kinerja->bukti_file ?? false)
+                            <a href="{{ $audit->validasi->kinerja->bukti_file }}" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                                Lihat
+                            </a>
+                        @else
+                            <span class="text-gray-400 text-xs">Tidak ada</span>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-900">{{ $audit->auditor->name ?? 'N/A' }}</td>
                     <td class="px-6 py-4 text-sm text-gray-900">{{ $audit->tanggal_audit }}</td>
                     <td class="px-6 py-4 text-sm text-gray-900">{{ $audit->periode }}</td>
                     <td class="px-6 py-4 text-sm text-gray-900">

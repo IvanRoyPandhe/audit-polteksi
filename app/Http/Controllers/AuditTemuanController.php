@@ -24,9 +24,10 @@ class AuditTemuanController extends Controller
     {
         $request->validate([
             'audit_id' => 'required|exists:audit,audit_id',
-            'jenis_temuan' => 'required|max:50',
+            'kategori_temuan' => 'required|max:50',
             'deskripsi_temuan' => 'required',
-            'tingkat_risiko' => 'required|max:20'
+            'severity' => 'required|max:20',
+            'rekomendasi' => 'nullable'
         ]);
 
         AuditTemuan::create($request->all());
@@ -43,9 +44,10 @@ class AuditTemuanController extends Controller
     {
         $request->validate([
             'audit_id' => 'required|exists:audit,audit_id',
-            'jenis_temuan' => 'required|max:50',
+            'kategori_temuan' => 'required|max:50',
             'deskripsi_temuan' => 'required',
-            'tingkat_risiko' => 'required|max:20'
+            'severity' => 'required|max:20',
+            'rekomendasi' => 'nullable'
         ]);
 
         $auditTemuan->update($request->all());

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class Audit extends Model
 {
+    use LogsActivity;
+    
     protected $table = 'audit';
     protected $primaryKey = 'audit_id';
     public $timestamps = false;

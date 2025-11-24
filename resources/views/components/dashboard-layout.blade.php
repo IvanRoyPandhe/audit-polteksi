@@ -36,7 +36,13 @@
                     Dashboard
                 </a>
                 
-                <!-- Master Data -->
+                @php
+                    $userRole = auth()->user()->role_id;
+                    // 1 = Admin, 2 = Auditor, 3 = Validator, 4 = Staff, 5 = Pimpinan
+                @endphp
+                
+                <!-- ADMIN ONLY: Master Data -->
+                @if(in_array($userRole, [1]))
                 <div class="px-4 py-2">
                     <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Master Data</p>
                 </div>
@@ -61,27 +67,45 @@
                     </svg>
                     Kriteria
                 </a>
+                @endif
                 
-                <!-- Performance Management -->
+                <!-- STAFF: Data Kinerja & Tindak Lanjut -->
+                @if(in_array($userRole, [1, 4]))
                 <div class="px-4 py-2 mt-4">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Performance</p>
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Data Kinerja</p>
                 </div>
                 
                 <a href="{{ route('data-kinerja.index') }}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 text-sm">
                     <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
                     </svg>
-                    Data Kinerja
+                    Input Data Kinerja
                 </a>
+                
+                <a href="{{ route('tindak-lanjut.index') }}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 text-sm">
+                    <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.25-4.875c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0117.25 18.75h-8.5A2.25 2.25 0 016.5 16.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.124-.08M15 12.75a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    Tindak Lanjut
+                </a>
+                @endif
+                
+                <!-- VALIDATOR: Validasi -->
+                @if(in_array($userRole, [1, 3]))
+                <div class="px-4 py-2 mt-4">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Validasi</p>
+                </div>
                 
                 <a href="{{ route('validasi.index') }}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 text-sm">
                     <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                     </svg>
-                    Validasi
+                    Validasi Data
                 </a>
+                @endif
                 
-                <!-- Audit Management -->
+                <!-- AUDITOR: Audit & Temuan -->
+                @if(in_array($userRole, [1, 2]))
                 <div class="px-4 py-2 mt-4">
                     <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Audit</p>
                 </div>
@@ -100,24 +124,28 @@
                     Temuan Audit
                 </a>
                 
-                <a href="{{ route('tindak-lanjut.index') }}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 text-sm">
-                    <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.25-4.875c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0117.25 18.75h-8.5A2.25 2.25 0 016.5 16.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.124-.08M15 12.75a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    Tindak Lanjut
-                </a>
-                
-                <!-- Reports -->
-                <div class="px-4 py-2 mt-4">
-                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Reports</p>
-                </div>
-                
                 <a href="{{ route('laporan.index') }}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 text-sm">
                     <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
                     </svg>
                     Laporan
                 </a>
+                @endif
+                
+                <!-- PIMPINAN: View Only (Laporan & Audit Trail) -->
+                @if(in_array($userRole, [1, 5]))
+                <div class="px-4 py-2 mt-4">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Monitoring</p>
+                </div>
+                
+                @if($userRole == 5)
+                <a href="{{ route('laporan.index') }}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 text-sm">
+                    <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
+                    </svg>
+                    Laporan
+                </a>
+                @endif
                 
                 <a href="{{ route('audit-trail.index') }}" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 text-sm">
                     <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
@@ -125,6 +153,7 @@
                     </svg>
                     Audit Trail
                 </a>
+                @endif
                 
                 <div class="mt-6 px-4">
                     @if(auth()->check() && auth()->user()->role_id == 1)
