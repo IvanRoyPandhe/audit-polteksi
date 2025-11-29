@@ -39,6 +39,7 @@ class IndikatorKinerjaController extends Controller
         $request->validate([
             'standar_id' => 'required|exists:standar_mutu,standar_id',
             'nama_indikator' => 'required|max:150',
+            'deskripsi' => 'nullable',
             'target' => 'required|numeric',
             'status' => 'required|max:30'
         ]);
@@ -51,6 +52,17 @@ class IndikatorKinerjaController extends Controller
         
         IndikatorKinerja::create($data);
         return redirect()->route('indikator-kinerja.index')->with('success', 'Indikator kinerja berhasil ditambahkan');
+    }
+
+    public function show(IndikatorKinerja $indikatorKinerja)
+    {
+        // Check unit access for non-admin
+        if (auth()->user()->role_id != 1 && $indikatorKinerja->unit_id != auth()->user()->unit_id) {
+            abort(403, 'Anda tidak memiliki akses ke data unit lain');
+        }
+        
+        $indikatorKinerja->load('standar', 'unit', 'kriteria', 'dataKinerja');
+        return view('indikator-kinerja.show', compact('indikatorKinerja'));
     }
 
     public function edit(IndikatorKinerja $indikatorKinerja)
@@ -79,6 +91,7 @@ class IndikatorKinerjaController extends Controller
         $request->validate([
             'standar_id' => 'required|exists:standar_mutu,standar_id',
             'nama_indikator' => 'required|max:150',
+            'deskripsi' => 'nullable',
             'target' => 'required|numeric',
             'status' => 'required|max:30'
         ]);

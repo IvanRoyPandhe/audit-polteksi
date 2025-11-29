@@ -14,6 +14,7 @@ class IndikatorKinerja extends Model
         'unit_id',
         'standar_id',
         'nama_indikator',
+        'deskripsi',
         'target',
         'status'
     ];
